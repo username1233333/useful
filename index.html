@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Button</title>
+    <title>Time Window</title>
     <style>
-        /* Add some CSS to style the button */
+        /* Add some CSS to style the window and button */
+        body {
+            background-color: green;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
         button {
-            padding: 15px;
-            font-size: 16px;
+            padding: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-<button onclick="showTime()">Get Time</button>
+<button onclick="showTime()">Time</button>
 
 <script>
     function showTime() {
@@ -33,6 +42,8 @@
         seconds = (seconds < 10) ? "0" + seconds : seconds;
 
         var timeString = hours + ":" + minutes + ":" + seconds + " " + meridiem;
+
+        // Display time in an alert
         alert('Current time is: ' + timeString);
     }
 </script>
