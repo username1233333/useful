@@ -1,8 +1,14 @@
-<!-- ... Previous code ... -->
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Messaging</title>
+</head>
+<body>
     <div id="room-code-container">
         <button id="create-room">Create Room</button>
-        <input id="join-room" placeholder="Enter Room Code" />
+        <input id="join-room" placeholder="Enter Room Code (5 digits)" maxlength="5" />
         <button id="join-button">Join Room</button>
         <div id="room-code"></div>
     </div>
@@ -28,7 +34,11 @@
             // Room joining
             $('#join-button').click(function () {
                 var roomCode = $('#join-room').val();
-                socket.emit('join room', roomCode);
+                if (/^\d{5}$/.test(roomCode)) {
+                    socket.emit('join room', roomCode);
+                } else {
+                    alert('Please enter a valid 5-digit room code.');
+                }
             });
 
             // Listen for room code
@@ -49,7 +59,7 @@
 
             // Handle invalid room code
             socket.on('invalid room', function () {
-                alert('Invalid room code. Please enter a valid room code or create a new room.');
+                alert('Invalid room code. Please enter a valid 5-digit room code or create a new room.');
             });
 
             // Send chat messages
@@ -62,4 +72,3 @@
     </script>
 </body>
 </html>
-
