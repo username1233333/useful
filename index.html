@@ -13,6 +13,13 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #timeDisplay {
+            padding: 20px;
+            font-size: 18px;
+            color: white;
         }
 
         button {
@@ -24,6 +31,7 @@
 <body>
 
 <button onclick="showTime()">Time</button>
+<div id="timeDisplay"></div>
 
 <script>
     function showTime() {
@@ -43,8 +51,8 @@
 
         var timeString = hours + ":" + minutes + ":" + seconds + " " + meridiem;
 
-        // Display time in an alert
-        alert('Current time is: ' + timeString);
+        // Display time in a div
+        document.getElementById("timeDisplay").innerHTML = 'Current time is: ' + timeString;
     }
 </script>
 
