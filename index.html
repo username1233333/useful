@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Button</title>
+    <style>
+        /* Add some CSS to style the button */
+        button {
+            padding: 15px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,13 +22,17 @@
         var hours = currentTime.getHours();
         var minutes = currentTime.getMinutes();
         var seconds = currentTime.getSeconds();
+        var meridiem = (hours >= 12) ? "PM" : "AM";
+
+        // Convert to 12-hour format
+        hours = (hours % 12) || 12;
 
         // Add leading zero if needed
         hours = (hours < 10) ? "0" + hours : hours;
         minutes = (minutes < 10) ? "0" + minutes : minutes;
         seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-        var timeString = hours + ":" + minutes + ":" + seconds;
+        var timeString = hours + ":" + minutes + ":" + seconds + " " + meridiem;
         alert('Current time is: ' + timeString);
     }
 </script>
