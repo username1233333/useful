@@ -21,10 +21,10 @@
     <div id="user-list"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script>
         $(function () {
-            var socket = io();
+            const socket = io();
 
             // Room creation
             $('#create-room').click(function () {
@@ -33,7 +33,7 @@
 
             // Room joining
             $('#join-button').click(function () {
-                var roomCode = $('#join-room').val();
+                const roomCode = $('#join-room').val();
                 if (/^\d{5}$/.test(roomCode)) {
                     socket.emit('join room', roomCode);
                 } else {
@@ -48,7 +48,7 @@
 
             // Update user list
             socket.on('update users', function (users) {
-                var userList = users.map(userId => '<li>' + userId + '</li>').join('');
+                const userList = users.map(userId => '<li>' + userId + '</li>').join('');
                 $('#user-list').html('<strong>Users in Room:</strong><ul>' + userList + '</ul>');
             });
 
@@ -64,7 +64,10 @@
 
             // Send chat messages
             $('form').submit(function () {
-                socket.emit('chat message', $('#m').val());
+                const message = $('#m').val();
+                if (message.trim() !== '') {
+                    socket.emit('chat message', message);
+                }
                 $('#m').val('');
                 return false;
             });
