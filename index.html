@@ -3,20 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vimeo Video Hosting</title>
+    <title>Video Uploading Website</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
 </head>
 <body>
-    <h1>Vimeo Video Hosting</h1>
+    <h1>Video Uploading Website</h1>
 
-    <div id="vimeoPlayer"></div>
+    <input type="file" id="videoInput" name="file" accept="video/*" required>
+    <br>
+    <button id="uploadButton">Upload</button>
 
-    <script src="https://player.vimeo.com/api/player.js"></script>
+    <h2>Uploaded Videos</h2>
+    <div id="videoList"></div>
+
     <script>
-        // Replace 'https://vimeo.com/890435016/ee4b8fa1cd?share=copy' with the actual Vimeo video ID
-        var player = new Vimeo.Player('vimeoPlayer', {
-            id: 'YOUR_VIDEO_ID',
-            width: 640,
+        // Cloudinary configuration
+        const cloudName = 'YOUR_CLOUD_NAME';
+        const uploadPreset = 'YOUR_UPLOAD_PRESET';
+
+        cloudinary.setCloudName(cloudName);
+
+        // Event listener for the upload button
+        $('#uploadButton').click(function() {
+            const fileInput = document.getElementById('videoInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                // Upload the video to Cloudinary
+                cloudinary.uploader.upload(file, { upload_preset: uploadPreset }, function(result) {
+                    // Display the uploaded video
+                    const videoListElement = document.getElementById('videoList');
+                    const videoElement = document.createElement('video');
+                    videoElement.width = 400;
+                    videoElement.controls = true;
+                    videoElement.src = result.secure_url;
+                    videoListElement.appendChild(videoElement);
+                });
+            }
+        });
+
+        // Retrieve and display existing videos
+        $.get(`https://res.cloudinary.com/${cloudName}/video/list/videos.json`, function(data) {
+            const videoListElement = document.getElementById('videoList');
+            data.resources.forEach(video => {
+                const videoElement = document.createElement('video');
+                videoElement.width = 400;
+                videoElement.controls = true;
+                videoElement.src = video.secure_url;
+                videoListElement.appendChild(videoElement);
+            });
         });
     </script>
 </body>
 </html>
+
