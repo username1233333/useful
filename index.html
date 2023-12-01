@@ -1,38 +1,46 @@
-const express = require('express');
-const formidable = require('formidable');
-const fs = require('fs');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Hosting Website</title>
+</head>
+<body>
+    <h1>Video Hosting Website</h1>
 
-const app = express();
-const port = process.env.PORT || 3000;
+    <form id="uploadForm">
+        <label for="videoInput">Select a video:</label>
+        <input type="file" id="videoInput" name="videoInput" accept="video/*" required>
+        <br>
+        <button type="button" onclick="uploadVideo()">Upload</button>
+    </form>
 
-app.use(express.static('public'));
+    <script>
+        function uploadVideo() {
+            var videoInput = document.getElementById('videoInput');
+            var file = videoInput.files[0];
 
-app.post('/upload', (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.uploadDir = 'uploads';
+            var formData = new FormData();
+            formData.append('file', file);
 
-    form.parse(req, (err, fields, files) => {
-        if (err) {
-            res.status(500).send('Internal Server Error');
-            return;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://api.vimeo.com/me/videos', true);
+            xhr.setRequestHeader('Authorization', 'Bearer ac1cef09415f699a702bb74b1dae22c045ca4d0d');
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Video uploaded successfully!');
+                } else {
+                    console.error('Failed to upload video');
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Error during video upload');
+            };
+
+            xhr.send(formData);
         }
-
-        const videoPath = files.videoInput.path;
-        const videoName = files.videoInput.name;
-
-        // Move the video file to a permanent location
-        const newPath = `uploads/${videoName}`;
-        fs.rename(videoPath, newPath, (err) => {
-            if (err) {
-                res.status(500).send('Internal Server Error');
-                return;
-            }
-
-            res.status(201).send('Video uploaded successfully!');
-        });
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+    </script>
+</body>
+</html>
