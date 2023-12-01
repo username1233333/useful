@@ -22,7 +22,9 @@
         const cloudName = 'ddvnqy4kp';
         const uploadPreset = 'oeprsvw0';
 
-        cloudinary.setCloudName(cloudName);
+        cloudinary.config({
+            cloud_name: cloudName
+        });
 
         // Event listener for the upload button
         $('#uploadButton').click(function() {
@@ -44,7 +46,7 @@
         });
 
         // Retrieve and display existing videos
-        $.get(`https://res.cloudinary.com/${cloudName}/video/list/videos.json`, function(data) {
+        $.get(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image`, function(data) {
             const videoListElement = document.getElementById('videoList');
             data.resources.forEach(video => {
                 const videoElement = document.createElement('video');
@@ -57,4 +59,3 @@
     </script>
 </body>
 </html>
-
