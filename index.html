@@ -1,78 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Messaging</title>
-</head>
-<body>
-    <div id="room-code-container">
-        <button id="create-room">Create Room</button>
-        <input id="join-room" placeholder="Enter Room Code (5 digits)" maxlength="5" />
-        <button id="join-button">Join Room</button>
-        <div id="room-code"></div>
-    </div>
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-    <ul id="messages"></ul>
-    <form id="form" action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+const server = http.createServer((req, res) => {
+  if (req.method === 'POST' && req.url === '/upload') {
+    handleFileUpload(req, res);
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
+  }
+});
 
-    <div id="user-list"></div>
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
-    <script>
-        $(function () {
-            const socket = io();
+function handleFileUpload(req, res) {
+  let data = '';
 
-            // Room creation
-            $('#create-room').click(function () {
-                socket.emit('create room');
-            });
+  req.on('data', chunk => {
+    data += chunk;
+  });
 
-            // Room joining
-            $('#join-button').click(function () {
-                const roomCode = $('#join-room').val();
-                if (/^\d{5}$/.test(roomCode)) {
-                    socket.emit('join room', roomCode);
-                } else {
-                    alert('Please enter a valid 5-digit room code.');
-                }
-            });
+  req.on('end', () => {
+    try {
+      const parsedData = JSON.parse(data);
+      const fileType = parsedData.type; // 'video', 'image', 'file'
+      const fileData = parsedData.data; // Base64-encoded file data
+      const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileType}`;
 
-            // Listen for room code
-            socket.on('room code', function (roomCode) {
-                $('#room-code').text('Room Code: ' + roomCode);
-            });
+      const filePath = path.join(__dirname, 'uploads', fileName);
+      const fileBuffer = Buffer.from(fileData, 'base64');
 
-            // Update user list
-            socket.on('update users', function (users) {
-                const userList = users.map(userId => '<li>' + userId + '</li>').join('');
-                $('#user-list').html('<strong>Users in Room:</strong><ul>' + userList + '</ul>');
-            });
+      fs.writeFileSync(filePath, fileBuffer);
 
-            // Receive and display chat messages
-            socket.on('chat message', function (data) {
-                $('#messages').append($('<li>').text(data.id + ': ' + data.message));
-            });
-
-            // Handle invalid room code
-            socket.on('invalid room', function () {
-                alert('Invalid room code. Please enter a valid 5-digit room code or create a new room.');
-            });
-
-            // Send chat messages
-            $('form').submit(function () {
-                const message = $('#m').val();
-                if (message.trim() !== '') {
-                    socket.emit('chat message', message);
-                }
-                $('#m').val('');
-                return false;
-            });
-        });
-    </script>
-</body>
-</html>
-
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, message: 'File uploaded successfully' }));
+    } catch (error) {
+      console.error(error);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, message: 'Internal Server Error' }));
+    }
+  });
+}
