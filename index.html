@@ -1,46 +1,22 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud HTML File Storage</title>
+</head>
+<body>
 
-const server = http.createServer((req, res) => {
-  if (req.method === 'POST' && req.url === '/upload') {
-    handleFileUpload(req, res);
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
-  }
-});
+    <h1>Welcome to Cloud HTML File Storage!</h1>
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+    <p>This is a simple HTML file stored in the cloud.</p>
 
-function handleFileUpload(req, res) {
-  let data = '';
+    <ul>
+        <li><a href="page1.html">Page 1</a></li>
+        <li><a href="page2.html">Page 2</a></li>
+    </ul>
 
-  req.on('data', chunk => {
-    data += chunk;
-  });
+    <p>Feel free to customize this HTML file and add more content.</p>
 
-  req.on('end', () => {
-    try {
-      const parsedData = JSON.parse(data);
-      const fileType = parsedData.type; // 'video', 'image', 'file'
-      const fileData = parsedData.data; // Base64-encoded file data
-      const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}.${fileType}`;
-
-      const filePath = path.join(__dirname, 'uploads', fileName);
-      const fileBuffer = Buffer.from(fileData, 'base64');
-
-      fs.writeFileSync(filePath, fileBuffer);
-
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: true, message: 'File uploaded successfully' }));
-    } catch (error) {
-      console.error(error);
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ success: false, message: 'Internal Server Error' }));
-    }
-  });
-}
+</body>
+</html>
