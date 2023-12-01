@@ -3,44 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Hosting Website</title>
+    <title>Vimeo Video Hosting</title>
 </head>
 <body>
-    <h1>Video Hosting Website</h1>
+    <h1>Vimeo Video Hosting</h1>
 
-    <form id="uploadForm">
-        <label for="videoInput">Select a video:</label>
-        <input type="file" id="videoInput" name="videoInput" accept="video/*" required>
-        <br>
-        <button type="button" onclick="uploadVideo()">Upload</button>
-    </form>
+    <div id="vimeoPlayer"></div>
 
+    <script src="https://player.vimeo.com/api/player.js"></script>
     <script>
-        function uploadVideo() {
-            var videoInput = document.getElementById('videoInput');
-            var file = videoInput.files[0];
-
-            var formData = new FormData();
-            formData.append('file', file);
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://api.vimeo.com/me/videos', true);
-            xhr.setRequestHeader('Authorization', 'Bearer ac1cef09415f699a702bb74b1dae22c045ca4d0d');
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    console.log('Video uploaded successfully!');
-                } else {
-                    console.error('Failed to upload video');
-                }
-            };
-
-            xhr.onerror = function () {
-                console.error('Error during video upload');
-            };
-
-            xhr.send(formData);
-        }
+        // Replace 'https://vimeo.com/890435016/ee4b8fa1cd?share=copy' with the actual Vimeo video ID
+        var player = new Vimeo.Player('vimeoPlayer', {
+            id: 'YOUR_VIDEO_ID',
+            width: 640,
+        });
     </script>
 </body>
 </html>
