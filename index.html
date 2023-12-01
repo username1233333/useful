@@ -3,20 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud HTML File Storage</title>
+    <title>Video Sharing Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        #videoPlayer {
+            width: 100%;
+        }
+
+        #videoList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .videoListItem {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>Welcome to Cloud HTML File Storage!</h1>
+<header>
+    <h1>Video Sharing Website</h1>
+</header>
 
-    <p>This is a simple HTML file stored in the cloud.</p>
+<main>
+    <h2>Latest Videos</h2>
+    
+    <video id="videoPlayer" controls>
+        <source src="example_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
-    <ul>
-        <li><a href="page1.html">Page 1</a></li>
-        <li><a href="page2.html">Page 2</a></li>
+    <ul id="videoList">
+        <li class="videoListItem">
+            <video width="320" height="240" controls>
+                <source src="example_video_1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </li>
+        <li class="videoListItem">
+            <video width="320" height="240" controls>
+                <source src="example_video_2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </li>
+        <!-- Add more video items as needed -->
     </ul>
 
-    <p>Feel free to customize this HTML file and add more content.</p>
+    <h2>Upload Video</h2>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <label for="videoInput">Select a video:</label>
+        <input type="file" id="videoInput" name="videoInput" accept="video/*" required>
+        <br>
+        <input type="submit" value="Upload">
+    </form>
+</main>
 
 </body>
 </html>
