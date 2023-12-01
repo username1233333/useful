@@ -4,77 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Sharing Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-        }
-
-        #videoPlayer {
-            width: 100%;
-        }
-
-        #videoList {
-            list-style: none;
-            padding: 0;
-        }
-
-        .videoListItem {
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
-
-<header>
     <h1>Video Sharing Website</h1>
-</header>
 
-<main>
-    <h2>Latest Videos</h2>
-    
-    <video id="videoPlayer" controls>
-        <source src="example_video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
-    <ul id="videoList">
-        <li class="videoListItem">
-            <video width="320" height="240" controls>
-                <source src="example_video_1.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </li>
-        <li class="videoListItem">
-            <video width="320" height="240" controls>
-                <source src="example_video_2.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </li>
-        <!-- Add more video items as needed -->
-    </ul>
-
-    <h2>Upload Video</h2>
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+    <form>
         <label for="videoInput">Select a video:</label>
         <input type="file" id="videoInput" name="videoInput" accept="video/*" required>
         <br>
-        <input type="submit" value="Upload">
+        <button onclick="uploadVideo()">Upload</button>
     </form>
-</main>
 
+    <div id="videoList"></div>
+
+    <script>
+        function uploadVideo() {
+            var videoInput = document.getElementById('videoInput');
+            var videoList = document.getElementById('videoList');
+
+            var videoURL = URL.createObjectURL(videoInput.files[0]);
+
+            // Create an HTML5 video element
+            var videoElement = document.createElement('video');
+            videoElement.width = 400;
+            videoElement.controls = true;
+            videoElement.src = videoURL;
+
+            // Append the video element to the videoList div
+            videoList.appendChild(videoElement);
+        }
+    </script>
 </body>
 </html>
+
