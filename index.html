@@ -8,11 +8,11 @@
 <body>
     <h1>Video Sharing Website</h1>
 
-    <form>
+    <form id="uploadForm">
         <label for="videoInput">Select a video:</label>
         <input type="file" id="videoInput" name="videoInput" accept="video/*" required>
         <br>
-        <button onclick="uploadVideo()">Upload</button>
+        <button type="button" onclick="uploadVideo()">Upload</button>
     </form>
 
     <div id="videoList"></div>
@@ -32,8 +32,13 @@
 
             // Append the video element to the videoList div
             videoList.appendChild(videoElement);
+
+            // Open a new window for video playback
+            var videoWindow = window.open('', '_blank', 'width=420,height=360');
+            videoWindow.document.write('<html><head><title>Video Player</title></head><body style="margin: 0; padding: 0;">');
+            videoWindow.document.write('<video width="100%" height="100%" controls autoplay><source src="' + videoURL + '" type="video/mp4"></video>');
+            videoWindow.document.write('</body></html>');
         }
     </script>
 </body>
 </html>
-
