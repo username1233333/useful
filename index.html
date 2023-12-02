@@ -51,23 +51,62 @@
     <p id="money-display">Money: $<span id="money">1000</span></p>
 
     <div id="animals-container">
-        <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 2, 'komodo.jpg')">Buy Komodo Dragon ($100)</button>
-        <button class="button" onclick="buyAnimal('T-Rex', 500, 10, 'trex.jpg')">Buy T-Rex ($500)</button>
-        <button class="button" onclick="buyAnimal('Emu', 50, 1, 'emu.jpg')">Buy Emu ($50)</button>
-        <button class="button" onclick="buyAnimal('Velociraptor', 150, 3, 'velociraptor.jpg')">Buy Velociraptor ($150)</button>
-        <button class="button" onclick="buyAnimal('Stegosaurus', 300, 6, 'stegosaurus.jpg')">Buy Stegosaurus ($300)</button>
-        <button class="button" onclick="buyAnimal('Pterodactyl', 200, 4, 'pterodactyl.jpg')">Buy Pterodactyl ($200)</button>
-        <button class="button" onclick="buyAnimal('Mech Suit', 1000, 20, 'mechsuit.jpg')">Buy Mech Suit ($1000)</button>
-        <button class="button" onclick="buyAnimal('Raptor', 200, 5, 'raptor.jpg')">Buy Raptor ($200)</button>
-        <button class="button" onclick="buyAnimal('Chicken', 10, 0.5, 'chicken.jpg')">Buy Chicken ($10)</button>
-        <button class="button" onclick="buyAnimal('Pig', 30, 1, 'pig.jpg')">Buy Pig ($30)</button>
-        <!-- Add more animals and habitats here -->
+        <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1)">Buy Ground Habitat ($200)</button>
+        <button class="button" onclick="buyHabitat('Water Habitat', 300, 2)">Buy Water Habitat ($300)</button>
+        <button class="button" onclick="buyHabitat('Air Habitat', 400, 3)">Buy Air Habitat ($400)</button>
+        
+        <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 2, 'komodo.jpg', 'Ground Habitat')">Buy Komodo Dragon ($100)</button>
+        <button class="button" onclick="buyAnimal('T-Rex', 500, 10, 'trex.jpg', 'Ground Habitat')">Buy T-Rex ($500)</button>
+        <button class="button" onclick="buyAnimal('Emu', 50, 1, 'emu.jpg', 'Ground Habitat')">Buy Emu ($50)</button>
+        <button class="button" onclick="buyAnimal('Velociraptor', 150, 3, 'velociraptor.jpg', 'Air Habitat')">Buy Velociraptor ($150)</button>
+        <button class="button" onclick="buyAnimal('Stegosaurus', 300, 6, 'stegosaurus.jpg', 'Ground Habitat')">Buy Stegosaurus ($300)</button>
+        <button class="button" onclick="buyAnimal('Pterodactyl', 200, 4, 'pterodactyl.jpg', 'Air Habitat')">Buy Pterodactyl ($200)</button>
+        <button class="button" onclick="buyAnimal('Mech Suit', 1000, 20, 'mechsuit.jpg', 'Air Habitat')">Buy Mech Suit ($1000)</button>
+        <button class="button" onclick="buyAnimal('Raptor', 200, 5, 'raptor.jpg', 'Air Habitat')">Buy Raptor ($200)</button>
+        <button class="button" onclick="buyAnimal('Chicken', 10, 0.5, 'chicken.jpg', 'Ground Habitat')">Buy Chicken ($10)</button>
+        <button class="button" onclick="buyAnimal('Pig', 30, 1, 'pig.jpg', 'Ground Habitat')">Buy Pig ($30)</button>
+        
+        <button class="button" onclick="buyAnimal('Dolphin', 250, 5, 'dolphin.jpg', 'Water Habitat')">Buy Dolphin ($250)</button>
+        <button class="button" onclick="buyAnimal('Shark', 400, 8, 'shark.jpg', 'Water Habitat')">Buy Shark ($400)</button>
+        <button class="button" onclick="buyAnimal('Whale', 800, 15, 'whale.jpg', 'Water Habitat')">Buy Whale ($800)</button>
+        <button class="button" onclick="buyAnimal('Eagle', 120, 2.5, 'eagle.jpg', 'Air Habitat')">Buy Eagle ($120)</button>
+        <button class="button" onclick="buyAnimal('Elephant', 600, 12, 'elephant.jpg', 'Ground Habitat')">Buy Elephant ($600)</button>
+        <button class="button" onclick="buyAnimal('Lion', 350, 7, 'lion.jpg', 'Ground Habitat')">Buy Lion ($350)</button>
+        <button class="button" onclick="buyAnimal('Giraffe', 450, 9, 'giraffe.jpg', 'Ground Habitat')">Buy Giraffe ($450)</button>
+        <button class="button" onclick="buyAnimal('Kangaroo', 200, 4, 'kangaroo.jpg', 'Ground Habitat')">Buy Kangaroo ($200)</button>
+        <button class="button" onclick="buyAnimal('Panda', 300, 6, 'panda.jpg', 'Ground Habitat')">Buy Panda ($300)</button>
+        <button class="button" onclick="buyAnimal('Octopus', 180, 3.5, 'octopus.jpg', 'Water Habitat')">Buy Octopus ($180)</button>
+        <button class="button" onclick="buyAnimal('Gorilla', 280, 5.5, 'gorilla.jpg', 'Ground Habitat')">Buy Gorilla ($280)</button>
+        
+        <button class="button" onclick="buyBabyAnimal('Baby Komodo Dragon', 50, 1, 'baby_komodo.jpg', 'Ground Habitat')">Buy Baby Komodo Dragon ($50)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby T-Rex', 250, 5, 'baby_trex.jpg', 'Ground Habitat')">Buy Baby T-Rex ($250)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Emu', 25, 0.5, 'baby_emu.jpg', 'Ground Habitat')">Buy Baby Emu ($25)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Velociraptor', 75, 1.5, 'baby_velociraptor.jpg', 'Air Habitat')">Buy Baby Velociraptor ($75)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Stegosaurus', 150, 3, 'baby_stegosaurus.jpg', 'Ground Habitat')">Buy Baby Stegosaurus ($150)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Pterodactyl', 100, 2, 'baby_pterodactyl.jpg', 'Air Habitat')">Buy Baby Pterodactyl ($100)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Raptor', 100, 2.5, 'baby_raptor.jpg', 'Air Habitat')">Buy Baby Raptor ($100)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Chicken', 5, 0.25, 'baby_chicken.jpg', 'Ground Habitat')">Buy Baby Chicken ($5)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Pig', 15, 0.5, 'baby_pig.jpg', 'Ground Habitat')">Buy Baby Pig ($15)</button>
+        
+        <button class="button" onclick="buyBabyAnimal('Baby Dolphin', 125, 2.5, 'baby_dolphin.jpg', 'Water Habitat')">Buy Baby Dolphin ($125)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Shark', 200, 4, 'baby_shark.jpg', 'Water Habitat')">Buy Baby Shark ($200)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Whale', 400, 7.5, 'baby_whale.jpg', 'Water Habitat')">Buy Baby Whale ($400)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Eagle', 60, 1.25, 'baby_eagle.jpg', 'Air Habitat')">Buy Baby Eagle ($60)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Elephant', 300, 6, 'baby_elephant.jpg', 'Ground Habitat')">Buy Baby Elephant ($300)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Lion', 175, 3.5, 'baby_lion.jpg', 'Ground Habitat')">Buy Baby Lion ($175)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Giraffe', 225, 4.5, 'baby_giraffe.jpg', 'Ground Habitat')">Buy Baby Giraffe ($225)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Kangaroo', 100, 2, 'baby_kangaroo.jpg', 'Ground Habitat')">Buy Baby Kangaroo ($100)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Panda', 150, 3, 'baby_panda.jpg', 'Ground Habitat')">Buy Baby Panda ($150)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Octopus', 90, 1.75, 'baby_octopus.jpg', 'Water Habitat')">Buy Baby Octopus ($90)</button>
+        <button class="button" onclick="buyBabyAnimal('Baby Gorilla', 140, 2.75, 'baby_gorilla.jpg', 'Ground Habitat')">Buy Baby Gorilla ($140)</button>
+        <!-- Add more baby animals here -->
     </div>
 </div>
 
 <script>
     let money = 1000;
     let moneyPerMinute = 0;
+    let ownedHabitats = [];
 
     setInterval(function() {
         money += moneyPerMinute / 60;
@@ -78,25 +117,22 @@
         document.getElementById('money').textContent = money.toFixed(2);
     }
 
-    function buyAnimal(animalName, cost, revenuePerMinute, imageUrl) {
+    function buyHabitat(habitatName, cost, revenuePerMinute) {
         if (money >= cost) {
             money -= cost;
             moneyPerMinute += revenuePerMinute;
+            ownedHabitats.push(habitatName);
             updateDisplay();
-            alert(`You bought a ${animalName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
-            showAnimalImage(imageUrl);
+            alert(`You bought a ${habitatName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
         } else {
             alert("Not enough money!");
         }
     }
 
-    function showAnimalImage(imageUrl) {
-        const image = new Image();
-        image.src = imageUrl;
-        image.className = 'animal-image';
-        document.getElementById('animals-container').appendChild(image);
-    }
-</script>
-
-</body>
-</html>
+    function buyAnimal(animalName, cost, revenuePerMinute, imageUrl, requiredHabitat) {
+        if (ownedHabitats.includes(requiredHabitat)) {
+            if (money >= cost) {
+                money -= cost;
+                moneyPerMinute += revenuePerMinute;
+                updateDisplay();
+                alert(`You bought a ${animalName}! It generates
