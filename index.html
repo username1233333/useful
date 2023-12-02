@@ -5,59 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Money Game</title>
     <style>
-        /* Your existing styles remain unchanged */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+        }
 
+        /* Updated styles for habitats */
         .ground-habitat {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
             background-color: #ffd700;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .air-habitat {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
             background-color: #87CEEB;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .water-habitat {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
             background-color: #00BFFF;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .button {
-            /* Existing styles unchanged */
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
             background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
 
-        /* Add styles for new animal buttons */
+        /* New button styles */
         .chicken-button { background-color: #FFD700; }
         .emu-button { background-color: #FFA500; }
         .duck-button { background-color: #00BFFF; }
         .fish-button { background-color: #1E90FF; }
+
+        /* Existing styles remain unchanged */
+        /* Add more animal button styles as needed */
+
+        #game-container {
+            /* Updated background color */
+            background-color: #e0e0e0;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Existing styles remain unchanged */
     </style>
 </head>
 <body>
 
-<!-- Your existing HTML code remains unchanged -->
+<div id="game-container">
+    <!-- Existing HTML content remains unchanged -->
 
-<script>
-    // Your existing JavaScript code remains unchanged
+    <div class="habitat ground-habitat" id="ground-habitat">
+        <!-- Existing content remains unchanged -->
 
-    const waterAnimals = [
-        { name: 'Fish', cost: 10, earnings: 0.05, image: 'fish.jpg' },
-        // Add more water animals as needed
-    ];
+        <!-- Add more animals as needed -->
+        <button class="button chicken-button" onclick="buyAnimal('Chicken', 20, 0.1, 'chicken.jpg', 'ground')">Buy Chicken ($20)</button>
+        <button class="button emu-button" onclick="buyAnimal('Emu', 50, 0.2, 'emu.jpg', 'ground')">Buy Emu ($50)</button>
+        <button class="button duck-button" onclick="buyAnimal('Duck', 30, 0.15, 'duck.jpg', 'ground')">Buy Duck ($30)</button>
+        <button class="button fish-button" onclick="buyAnimal('Fish', 10, 0.05, 'fish.jpg', 'water')">Buy Fish ($10)</button>
+        <!-- Dynamically generate animal buttons -->
+        <div id="ground-animal-buttons"></div>
+    </div>
 
-    function buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType) {
-        // Existing code remains unchanged
+    <!-- Add more habitats as needed -->
 
-        // Check if the habitat matches the animal type
-        if ((habitatType === 'ground' && groundAnimals.some(animal => animal.name === animalName)) ||
-            (habitatType === 'air' && airAnimals.some(animal => animal.name === animalName)) ||
-            (habitatType === 'water' && waterAnimals.some(animal => animal.name === animalName))) {
-            // Animal matches the habitat
-            // Update money display and add the animal button
-            updateMoneyDisplay();
-            addAnimalButton(habitatType + '-animal-buttons', animalName, animalCost, animalEarnings, animalImage, habitatType);
-        } else {
-            alert('You need the appropriate habitat to buy ' + animalName);
-        }
-    }
-</script>
+</div>
+
+<!-- Existing JavaScript code remains unchanged -->
+
 </body>
 </html>
