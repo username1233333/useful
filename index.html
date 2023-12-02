@@ -46,23 +46,28 @@
     <h1>Dino Money Game</h1>
     <p id="money-display">Money: $<span id="money">1000</span></p>
 
-    <div class="habitat">
+    <div class="habitat" id="ground-habitat">
         <h2>Ground Habitat</h2>
         <p>Earnings: $<span id="ground-earnings">0</span> per second</p>
         <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1, 'ground')">Buy Ground Habitat ($200)</button>
         <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 2, 'komodo.jpg', 'ground')">Buy Komodo Dragon ($100)</button>
+        <button class="button" onclick="buyAnimal('T-Rex', 500, 10, 'trex.jpg', 'ground')">Buy T-Rex ($500)</button>
+        <button class="button" onclick="buyAnimal('Emu', 50, 1, 'emu.jpg', 'ground')">Buy Emu ($50)</button>
         <!-- Add more buttons for other ground animals -->
     </div>
 
-    <div class="habitat">
+    <div class="habitat" id="air-habitat">
         <h2>Air Habitat</h2>
         <p>Earnings: $<span id="air-earnings">0</span> per second</p>
         <button class="button" onclick="buyHabitat('Air Habitat', 400, 3, 'air')">Buy Air Habitat ($400)</button>
         <button class="button" onclick="buyAnimal('Pterodactyl', 200, 4, 'pterodactyl.jpg', 'air')">Buy Pterodactyl ($200)</button>
+        <button class="button" onclick="buyAnimal('Velociraptor', 150, 3, 'velociraptor.jpg', 'air')">Buy Velociraptor ($150)</button>
+        <button class="button" onclick="buyAnimal('Mech Suit', 1000, 20, 'mechsuit.jpg', 'air')">Buy Mech Suit ($1000)</button>
+        <button class="button" onclick="buyAnimal('Raptor', 200, 5, 'raptor.jpg', 'air')">Buy Raptor ($200)</button>
         <!-- Add more buttons for other air animals -->
     </div>
 
-    <!-- Add more habitats as needed -->
+    <!-- Add more habitats and animals as needed -->
 
 </div>
 
@@ -71,4 +76,54 @@
     let groundEarnings = 0;
     let airEarnings = 0;
 
-   
+    function buyHabitat(name, cost, multiplier, habitatType) {
+        const habitatElement = document.getElementById(`${habitatType}-habitat`);
+        if (money >= cost) {
+            money -= cost;
+            updateMoneyDisplay();
+            alert(`You bought a ${name} habitat! Animals in this habitat will earn ${multiplier} times more money.`);
+        } else {
+            alert("Not enough money to buy this habitat!");
+        }
+    }
+
+    function buyAnimal(name, cost, earnings, imageSrc, habitat) {
+        const habitatElement = document.getElementById(`${habitat}-habitat`);
+        if (money >= cost) {
+            money -= cost;
+            updateMoneyDisplay();
+            alert(`You bought a ${name} for your ${habitat} habitat! This animal will earn $${earnings} per second.`);
+            // Add logic here to handle the purchased animal and its earnings
+            if (habitat === 'ground') {
+                groundEarnings += earnings;
+                updateGroundEarnings();
+            } else if (habitat === 'air') {
+                airEarnings += earnings;
+                updateAirEarnings();
+            }
+        } else {
+            alert("Not enough money to buy this animal!");
+        }
+    }
+
+    function updateMoneyDisplay() {
+        document.getElementById("money").innerText = money;
+    }
+
+    function updateGroundEarnings() {
+        document.getElementById("ground-earnings").innerText = groundEarnings;
+    }
+
+    function updateAirEarnings() {
+        document.getElementById("air-earnings").innerText = airEarnings;
+    }
+
+    // Add a function to update earnings periodically based on the purchased animals
+    setInterval(function () {
+        money += groundEarnings + airEarnings;
+        updateMoneyDisplay();
+    }, 1000); // Update earnings every second
+</script>
+
+</body>
+</html>
