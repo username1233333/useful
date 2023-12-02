@@ -37,6 +37,11 @@
             border: 1px solid #ccc;
             display: inline-block;
         }
+
+        .animal-image {
+            max-width: 100px;
+            max-height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -46,11 +51,16 @@
     <p id="money-display">Money: $<span id="money">1000</span></p>
 
     <div id="animals-container">
-        <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 1)">Buy Komodo Dragon ($100)</button>
-        <button class="button" onclick="buyAnimal('T-Rex', 500, 5)">Buy T-Rex ($500)</button>
-        <button class="button" onclick="buyAnimal('Emu', 50, 0.5)">Buy Emu ($50)</button>
-        <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1)">Buy Ground Habitat ($200)</button>
-        <button class="button" onclick="buyHabitat('Water Habitat', 300, 2)">Buy Water Habitat ($300)</button>
+        <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 2, 'komodo.jpg')">Buy Komodo Dragon ($100)</button>
+        <button class="button" onclick="buyAnimal('T-Rex', 500, 10, 'trex.jpg')">Buy T-Rex ($500)</button>
+        <button class="button" onclick="buyAnimal('Emu', 50, 1, 'emu.jpg')">Buy Emu ($50)</button>
+        <button class="button" onclick="buyAnimal('Velociraptor', 150, 3, 'velociraptor.jpg')">Buy Velociraptor ($150)</button>
+        <button class="button" onclick="buyAnimal('Stegosaurus', 300, 6, 'stegosaurus.jpg')">Buy Stegosaurus ($300)</button>
+        <button class="button" onclick="buyAnimal('Pterodactyl', 200, 4, 'pterodactyl.jpg')">Buy Pterodactyl ($200)</button>
+        <button class="button" onclick="buyAnimal('Mech Suit', 1000, 20, 'mechsuit.jpg')">Buy Mech Suit ($1000)</button>
+        <button class="button" onclick="buyAnimal('Raptor', 200, 5, 'raptor.jpg')">Buy Raptor ($200)</button>
+        <button class="button" onclick="buyAnimal('Chicken', 10, 0.5, 'chicken.jpg')">Buy Chicken ($10)</button>
+        <button class="button" onclick="buyAnimal('Pig', 30, 1, 'pig.jpg')">Buy Pig ($30)</button>
         <!-- Add more animals and habitats here -->
     </div>
 </div>
@@ -68,26 +78,23 @@
         document.getElementById('money').textContent = money.toFixed(2);
     }
 
-    function buyAnimal(animalName, cost, revenuePerMinute) {
+    function buyAnimal(animalName, cost, revenuePerMinute, imageUrl) {
         if (money >= cost) {
             money -= cost;
             moneyPerMinute += revenuePerMinute;
             updateDisplay();
             alert(`You bought a ${animalName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
+            showAnimalImage(imageUrl);
         } else {
             alert("Not enough money!");
         }
     }
 
-    function buyHabitat(habitatName, cost, revenuePerMinute) {
-        if (money >= cost) {
-            money -= cost;
-            moneyPerMinute += revenuePerMinute;
-            updateDisplay();
-            alert(`You bought a ${habitatName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
-        } else {
-            alert("Not enough money!");
-        }
+    function showAnimalImage(imageUrl) {
+        const image = new Image();
+        image.src = imageUrl;
+        image.className = 'animal-image';
+        document.getElementById('animals-container').appendChild(image);
     }
 </script>
 
