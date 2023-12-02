@@ -5,44 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Zoo Game</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            color: #333;
-        }
-
-        .habitat {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            background-color: #ffd700;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .buy-button { background-color: #800080; color: white; } /* Purple color for the buy button */
-
-        #game-container {
-            background-color: #e0e0e0;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+        /* Your existing styles here */
     </style>
 </head>
 <body>
@@ -61,54 +24,83 @@
         <div id="ground-animal-buttons"></div>
     </div>
 
-    <!-- Add more habitats as needed -->
+    <!-- Mech Habitat -->
+    <div class="habitat" id="mech-habitat">
+        <h2 style="color: #4CAF50;">Mech Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="mech-earnings">0</span> per second</p>
+        <button class="button buy-button" onclick="buyHabitat('Mech Habitat', 500, 3, 'mech')">Buy Mech Habitat ($500)</button>
+
+        <!-- Dynamically generate animal buttons -->
+        <div id="mech-animal-buttons"></div>
+    </div>
+
+    <!-- Taser Habitat -->
+    <div class="habitat" id="taser-habitat">
+        <!-- Content for Taser Habitat -->
+    </div>
+
+    <!-- Electric Fence Habitat -->
+    <div class="habitat" id="electric-fence-habitat">
+        <!-- Content for Electric Fence Habitat -->
+    </div>
 
 </div>
 
 <script>
     let money = 1000;
     let groundEarnings = 0;
+    let mechEarnings = 0;
     let habitats = {
         'ground': { cost: 200, earnings: 1, animals: [] },
+        'mech': { cost: 500, earnings: 3, animals: [] },
         // Add more habitats as needed
     };
 
-    function buyHabitat(habitatName, habitatCost, habitatEarnings, habitatType) {
-        if (!(habitatType in habitats)) {
-            alert('Invalid habitat type');
-            return;
-        }
+    // Your existing JavaScript code here
 
-        if (money >= habitatCost) {
-            money -= habitatCost;
-            groundEarnings += habitatEarnings;
-            document.getElementById('ground-earnings').innerText = groundEarnings;
+    // Dynamically generate dinosaurs and animals
+    generateAnimals('ground', 50);
+    generateAnimals('mech', 50);
+    // Generate animals for other habitats if needed
 
-            // Add purchased habitat-specific animals
-            addHabitatAnimals(habitatType);
+    function generateAnimals(habitatType, numAnimals) {
+        const habitat = habitats[habitatType];
+        const containerId = habitatType + '-animal-buttons';
+        
+        for (let i = 1; i <= numAnimals; i++) {
+            const animal = {
+                name: `Animal${i}`,
+                cost: Math.floor(Math.random() * 500) + 100,
+                earnings: Math.random() * 5,
+                image: `animal${i}.jpg`
+            };
 
-            // Schedule a random event every 5 minutes
-            setInterval(() => handleRandomEvent(habitatType), 5 * 60 * 1000);
-
-            updateMoneyDisplay();
-        } else {
-            alert('Not enough money to buy ' + habitatName);
+            addAnimalButton(containerId, animal.name, animal.cost, animal.earnings, animal.image, habitatType);
         }
     }
 
     function handleRandomEvent(habitatType) {
-        const eventTypes = ['good', 'bad'];
+        const eventTypes = ['good', 'neutral', 'bad'];
         const randomEventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
 
         if (randomEventType === 'good') {
-            alert(`Good Event: You earned $1000!`);
-            money += 1000;
+            const moneyEarned = Math.floor(Math.random() * 1000) + 500;
+            alert(`Good Event: You earned $${moneyEarned} in the ${habitatType} Habitat!`);
+            money += moneyEarned;
             updateMoneyDisplay();
+        } else if (randomEventType === 'neutral') {
+            alert(`Neutral Event: Nothing happened in the ${habitatType} Habitat.`);
         } else if (randomEventType === 'bad') {
+            const habitat = habitats[habitatType];
             const randomAnimal = getRandomAnimal(habitatType);
+            
             if (randomAnimal) {
-                alert(`Bad Event: ${randomAnimal.name} died.`);
+                alert(`Bad Event: ${randomAnimal.name} in the ${habitatType} Habitat got sick.`);
                 removeAnimal(habitatType, randomAnimal);
+            } else {
+                alert(`Bad Event: A problem occurred in the ${habitatType} Habitat.`);
+                money -= 500;
+                updateMoneyDisplay();
             }
         }
     }
@@ -117,61 +109,6 @@
         const habitat = habitats[habitatType];
         const animals = habitat.animals;
         return animals.length > 0 ? animals[Math.floor(Math.random() * animals.length)] : null;
-    }
-
-    function removeAnimal(habitatType, animal) {
-        const habitat = habitats[habitatType];
-        const animals = habitat.animals;
-        const index = animals.indexOf(animal);
-        if (index !== -1) {
-            animals.splice(index, 1);
-            updateMoneyDisplay();
-        }
-    }
-
-    function updateMoneyDisplay() {
-        document.getElementById('money').innerText = money;
-    }
-
-    function addHabitatAnimals(habitatType) {
-        const habitat = habitats[habitatType];
-        const containerId = habitatType + '-animal-buttons';
-        const animalCosts = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
-        
-        for (let i = 0; i < 50; i++) {
-            const animalCost = animalCosts[Math.floor(Math.random() * animalCosts.length)];
-            const animalEarnings = Math.round(Math.random() * 3) + 1; // Random earnings between 1 and 4
-            const animalName = generateRandomName();
-            const animalImage = 'animal.jpg'; // Replace with actual image URL
-            const buttonClass = `${habitatType}-button`;
-            
-            addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass);
-        }
-    }
-
-    function generateRandomName() {
-        const prefixes = ['Mega', 'Tri', 'Bronto', 'Stego', 'Tyranno', 'Veloci', 'Raptor', 'Dilo', 'Ptero', 'Para'];
-        const suffixes = ['saurus', 'don', 'ceratops', 'rex', 'raptor', 'pod', 'saur', 'adon'];
-
-        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-        const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-
-        return randomPrefix + randomSuffix;
-    }
-
-    function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass) {
-        const habitat = habitats[habitatType];
-        const container = document.getElementById(containerId);
-        const button = document.createElement('button');
-        button.className = `button ${buttonClass}`;
-        button.innerText = `Buy ${animalName} ($${animalCost})`;
-        button.onclick = function () {
-            buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType);
-        };
-        container.appendChild(button);
-
-        // Add the animal to the habitat
-        habitat.animals.push({ name: animalName, cost: animalCost, earnings: animalEarnings, image: animalImage });
     }
 </script>
 </body>
