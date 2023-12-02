@@ -106,6 +106,17 @@
         <div id="electric-fence-animal-buttons"></div>
     </div>
 
+    <!-- Additional Habits -->
+    <!-- Add more habitats as needed -->
+
+    <button class="button buy-button" onclick="buyTree()">Buy Tree ($1)</button>
+
+    <!-- Hire People -->
+    <button class="button buy-button" onclick="hirePeople()">Hire People ($10 per minute)</button>
+
+    <!-- Buy Military Jeep -->
+    <button class="button buy-button" onclick="buyMilitaryJeep()">Buy Military Jeep ($200)</button>
+
 </div>
 
 <script>
@@ -116,12 +127,16 @@
     let electricFenceEarnings = 0;
 
     let habitats = {
-        'ground': { cost: 200, earnings: 1, animals: [] },
-        'mech': { cost: 500, earnings: 3, animals: [] },
-        'taser': { cost: 800, earnings: 5, animals: [] },
-        'electric-fence': { cost: 1000, earnings: 7, animals: [] },
+        'ground': { cost: 200, earnings: 1, maxAnimals: 3, animals: [] },
+        'mech': { cost: 500, earnings: 3, maxAnimals: 3, animals: [] },
+        'taser': { cost: 800, earnings: 5, maxAnimals: 3, animals: [] },
+        'electric-fence': { cost: 1000, earnings: 7, maxAnimals: 3, animals: [] },
         // Add more habitats as needed
     };
+
+    let trees = 0;
+    let people = { hired: false, cost: 10, effect: 0.2 }; // 20% reduction in bad events
+    let militaryJeep = { bought: false, cost: 200 };
 
     // Your existing JavaScript code here
 
@@ -140,11 +155,14 @@
             const animal = {
                 name: `Animal${i}`,
                 cost: Math.floor(Math.random() * 500) + 100,
+                babyCost: Math.floor(Math.random() * 100) + 50,
                 earnings: Math.random() * 5,
+                babyEarnings: Math.random() * 2,
                 image: `animal${i}.jpg`
             };
 
             addAnimalButton(containerId, animal.name, animal.cost, animal.earnings, animal.image, habitatType);
+            addAnimalButton(containerId, `Baby ${animal.name}`, animal.babyCost, animal.babyEarnings, animal.image, habitatType);
         }
     }
 
@@ -188,6 +206,7 @@
 
         if (money >= habitatCost) {
             money -= habitatCost;
+            habitats[habitatType].earnings += habitatEarnings;
 
             // Add purchased habitat-specific animals
             generateAnimals(habitatType, 10);
@@ -201,57 +220,56 @@
         }
     }
 
-    function updateMoneyDisplay() {
-        document.getElementById('money').innerText = money;
+    function buyTree() {
+        trees++;
+        money--;
+        updateMoneyDisplay();
+        alert(`You bought a tree! Now you have ${trees} trees.`);
     }
 
-    function removeAnimal(habitatType, animal) {
-        const habitat = habitats[habitatType];
-        const animals = habitat.animals;
-        const index = animals.indexOf(animal);
-        if (index !== -1) {
-            animals.splice(index, 1);
+    function hirePeople() {
+        if (!people.hired && money >= people.cost) {
+            people.hired = true;
+            money -= people.cost;
+            setInterval(() => handleRandomEventWithPeople(), 60 * 1000); // Schedule a random event every 1 minute
             updateMoneyDisplay();
-        }
-    }
-
-    function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType) {
-        const habitat = habitats[habitatType];
-        const container = document.getElementById(containerId);
-        const button = document.createElement('button');
-        button.className = 'button buy-button';
-        button.innerText = `Buy ${animalName} ($${animalCost})`;
-        button.onclick = function () {
-            buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType);
-        };
-
-        const animalImageElement = document.createElement('img');
-        animalImageElement.src = animalImage;
-        animalImageElement.alt = animalName;
-        animalImageElement.className = 'animal-image';
-
-        container.appendChild(button);
-        container.appendChild(animalImageElement);
-
-        // Add the animal to the habitat
-        habitat.animals.push({ name: animalName, cost: animalCost, earnings: animalEarnings, image: animalImage });
-    }
-
-    function buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType) {
-        const habitat = habitats[habitatType];
-
-        if (money >= animalCost) {
-            money -= animalCost;
-
-            // Add the purchased animal to the habitat
-            addAnimalButton(`${habitatType}-animal-buttons`, animalName, animalCost, animalEarnings, animalImage, habitatType);
-
-            // Update the habitat earnings
-            updateMoneyDisplay();
+            alert('You hired people to help manage the zoo. Bad events will occur less frequently now.');
         } else {
-            alert(`Not enough money to buy ${animalName}`);
+            alert('Either you have already hired people or you do not have enough money.');
         }
     }
+
+    function handleRandomEventWithPeople() {
+        const eventTypes = ['good', 'neutral', 'bad', 'bad', 'bad'];
+        const randomEventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+
+        if (randomEventType === 'good') {
+            const moneyEarned = Math.floor(Math.random() * 1000) + 500;
+            alert(`Good Event: Your staff handled the situation well. You earned $${moneyEarned}!`);
+            money += moneyEarned;
+            updateMoneyDisplay();
+        } else if (randomEventType === 'neutral') {
+            alert('Neutral Event: Your staff prevented a potential issue. No significant changes.');
+        } else if (randomEventType === 'bad') {
+            const habitatTypes = Object.keys(habitats);
+            const randomHabitatType = habitatTypes[Math.floor(Math.random() * habitatTypes.length)];
+            handleRandomEvent(randomHabitatType); // Delegate to the existing random event handler
+        }
+    }
+
+    function buyMilitaryJeep() {
+        if (!militaryJeep.bought && money >= militaryJeep.cost) {
+            militaryJeep.bought = true;
+            money -= militaryJeep.cost;
+            updateMoneyDisplay();
+            alert('You bought a military jeep! Bad events will have less impact now.');
+        } else {
+            alert('Either you have already bought a military jeep or you do not have enough money.');
+        }
+    }
+
+    // Your existing functions...
+
 </script>
 </body>
 </html>
