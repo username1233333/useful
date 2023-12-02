@@ -88,12 +88,22 @@
 
     <!-- Taser Habitat -->
     <div class="habitat" id="taser-habitat">
-        <!-- Content for Taser Habitat -->
+        <h2 style="color: #4CAF50;">Taser Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="taser-earnings">0</span> per second</p>
+        <button class="button buy-button" onclick="buyHabitat('Taser Habitat', 800, 5, 'taser')">Buy Taser Habitat ($800)</button>
+
+        <!-- Dynamically generate animal buttons -->
+        <div id="taser-animal-buttons"></div>
     </div>
 
     <!-- Electric Fence Habitat -->
     <div class="habitat" id="electric-fence-habitat">
-        <!-- Content for Electric Fence Habitat -->
+        <h2 style="color: #4CAF50;">Electric Fence Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="electric-fence-earnings">0</span> per second</p>
+        <button class="button buy-button" onclick="buyHabitat('Electric Fence Habitat', 1000, 7, 'electric-fence')">Buy Electric Fence Habitat ($1000)</button>
+
+        <!-- Dynamically generate animal buttons -->
+        <div id="electric-fence-animal-buttons"></div>
     </div>
 
 </div>
@@ -102,9 +112,14 @@
     let money = 1000;
     let groundEarnings = 0;
     let mechEarnings = 0;
+    let taserEarnings = 0;
+    let electricFenceEarnings = 0;
+
     let habitats = {
         'ground': { cost: 200, earnings: 1, animals: [] },
         'mech': { cost: 500, earnings: 3, animals: [] },
+        'taser': { cost: 800, earnings: 5, animals: [] },
+        'electric-fence': { cost: 1000, earnings: 7, animals: [] },
         // Add more habitats as needed
     };
 
@@ -113,6 +128,8 @@
     // Dynamically generate dinosaurs and animals
     generateAnimals('ground', 50);
     generateAnimals('mech', 50);
+    generateAnimals('taser', 50);
+    generateAnimals('electric-fence', 50);
     // Generate animals for other habitats if needed
 
     function generateAnimals(habitatType, numAnimals) {
@@ -171,8 +188,6 @@
 
         if (money >= habitatCost) {
             money -= habitatCost;
-            groundEarnings += habitatEarnings;
-            document.getElementById(`${habitatType}-earnings`).innerText = groundEarnings;
 
             // Add purchased habitat-specific animals
             generateAnimals(habitatType, 10);
@@ -204,7 +219,7 @@
         const habitat = habitats[habitatType];
         const container = document.getElementById(containerId);
         const button = document.createElement('button');
-        button.className = 'button';
+        button.className = 'button buy-button';
         button.innerText = `Buy ${animalName} ($${animalCost})`;
         button.onclick = function () {
             buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType);
@@ -227,14 +242,12 @@
 
         if (money >= animalCost) {
             money -= animalCost;
-            groundEarnings += animalEarnings;
-            updateMoneyDisplay();
 
             // Add the purchased animal to the habitat
             addAnimalButton(`${habitatType}-animal-buttons`, animalName, animalCost, animalEarnings, animalImage, habitatType);
 
             // Update the habitat earnings
-            document.getElementById(`${habitatType}-earnings`).innerText = groundEarnings;
+            updateMoneyDisplay();
         } else {
             alert(`Not enough money to buy ${animalName}`);
         }
@@ -242,4 +255,3 @@
 </script>
 </body>
 </html>
-
