@@ -34,11 +34,7 @@
             border-radius: 5px;
         }
 
-        .chicken-button { background-color: #FFD700; }
-        .emu-button { background-color: #FFA500; }
-        .duck-button { background-color: #00BFFF; }
-        .fish-button { background-color: #1E90FF; }
-        /* Add more button styles as needed */
+        .chicken-button { background-color: #800080; color: white; } /* Purple color for the chicken button */
 
         #game-container {
             background-color: #e0e0e0;
@@ -66,11 +62,12 @@
         <button class="button emu-button" onclick="buyAnimal('Emu', 50, 0.2, 'emu.jpg', 'ground')">Buy Emu ($50)</button>
         <button class="button duck-button" onclick="buyAnimal('Duck', 30, 0.15, 'duck.jpg', 'ground')">Buy Duck ($30)</button>
         <button class="button fish-button" onclick="buyAnimal('Fish', 10, 0.05, 'fish.jpg', 'water')">Buy Fish ($10)</button>
+
         <!-- Dynamically generate animal buttons -->
         <div id="ground-animal-buttons"></div>
     </div>
 
-    <!-- Add more habitats as needed -->
+    <!-- Add more habitats and animals as needed -->
 
 </div>
 
@@ -81,7 +78,7 @@
     const groundAnimals = [
         { name: 'Tyrannosaurus Rex', cost: 500, earnings: 2, image: 'trex.jpg' },
         { name: 'Stegosaurus', cost: 300, earnings: 1.5, image: 'stegosaurus.jpg' },
-        // Add more ground animals as needed
+        // Add 100 more ground animals as needed
     ];
 
     function buyHabitat(habitatName, habitatCost, habitatEarnings, habitatType) {
