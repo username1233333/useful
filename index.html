@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Money Game</title>
+    <title>Dino Zoo Game</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -34,7 +34,7 @@
             border-radius: 5px;
         }
 
-        .chicken-button { background-color: #800080; color: white; } /* Purple color for the chicken button */
+        .buy-button { background-color: #800080; color: white; } /* Purple color for the buy button */
 
         #game-container {
             background-color: #e0e0e0;
@@ -48,66 +48,84 @@
 <body>
 
 <div id="game-container">
-    <h1 style="color: #4CAF50;">Dino Money Game</h1>
+    <h1 style="color: #4CAF50;">Dino Zoo Game</h1>
     <p id="money-display" style="color: #333;">Money: $<span id="money">1000</span></p>
 
     <!-- Ground Habitat -->
     <div class="habitat" id="ground-habitat">
         <h2 style="color: #4CAF50;">Ground Habitat</h2>
         <p style="color: #333;">Earnings: $<span id="ground-earnings">0</span> per second</p>
-        <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1, 'ground')">Buy Ground Habitat ($200)</button>
-
-        <!-- Add more animals as needed -->
-        <button class="button chicken-button" onclick="buyAnimal('Chicken', 20, 0.1, 'chicken.jpg', 'ground')">Buy Chicken ($20)</button>
-        <button class="button emu-button" onclick="buyAnimal('Emu', 50, 0.2, 'emu.jpg', 'ground')">Buy Emu ($50)</button>
-        <button class="button duck-button" onclick="buyAnimal('Duck', 30, 0.15, 'duck.jpg', 'ground')">Buy Duck ($30)</button>
-        <button class="button fish-button" onclick="buyAnimal('Fish', 10, 0.05, 'fish.jpg', 'water')">Buy Fish ($10)</button>
+        <button class="button buy-button" onclick="buyHabitat('Ground Habitat', 200, 1, 'ground')">Buy Ground Habitat ($200)</button>
 
         <!-- Dynamically generate animal buttons -->
         <div id="ground-animal-buttons"></div>
     </div>
 
-    <!-- Add more habitats and animals as needed -->
+    <!-- Add more habitats as needed -->
 
 </div>
 
 <script>
     let money = 1000;
     let groundEarnings = 0;
-
-    const groundAnimals = [
-        { name: 'Tyrannosaurus Rex', cost: 500, earnings: 2, image: 'trex.jpg' },
-        { name: 'Stegosaurus', cost: 300, earnings: 1.5, image: 'stegosaurus.jpg' },
-        // Add 100 more ground animals as needed
-    ];
+    let habitats = {
+        'ground': { cost: 200, earnings: 1, animals: [] },
+        // Add more habitats as needed
+    };
 
     function buyHabitat(habitatName, habitatCost, habitatEarnings, habitatType) {
+        if (!(habitatType in habitats)) {
+            alert('Invalid habitat type');
+            return;
+        }
+
         if (money >= habitatCost) {
             money -= habitatCost;
-            if (habitatType === 'ground') {
-                groundEarnings += habitatEarnings;
-                document.getElementById('ground-earnings').innerText = groundEarnings;
-                // Add purchased habitat-specific animals
-                addHabitatAnimals(habitatType);
-            }
+            groundEarnings += habitatEarnings;
+            document.getElementById('ground-earnings').innerText = groundEarnings;
+
+            // Add purchased habitat-specific animals
+            addHabitatAnimals(habitatType);
+
+            // Schedule a random event every 5 minutes
+            setInterval(() => handleRandomEvent(habitatType), 5 * 60 * 1000);
+
             updateMoneyDisplay();
         } else {
             alert('Not enough money to buy ' + habitatName);
         }
     }
 
-    function buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType) {
-        if (money >= animalCost) {
-            money -= animalCost;
-            if (habitatType === 'ground') {
-                groundEarnings += animalEarnings;
-                document.getElementById('ground-earnings').innerText = groundEarnings;
-                // Add the purchased animal button to the ground habitat
-                addAnimalButton('ground-animal-buttons', animalName, animalCost, animalEarnings, animalImage, habitatType);
-            }
+    function handleRandomEvent(habitatType) {
+        const eventTypes = ['good', 'bad'];
+        const randomEventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+
+        if (randomEventType === 'good') {
+            alert(`Good Event: You earned $1000!`);
+            money += 1000;
             updateMoneyDisplay();
-        } else {
-            alert('Not enough money to buy ' + animalName);
+        } else if (randomEventType === 'bad') {
+            const randomAnimal = getRandomAnimal(habitatType);
+            if (randomAnimal) {
+                alert(`Bad Event: ${randomAnimal.name} died.`);
+                removeAnimal(habitatType, randomAnimal);
+            }
+        }
+    }
+
+    function getRandomAnimal(habitatType) {
+        const habitat = habitats[habitatType];
+        const animals = habitat.animals;
+        return animals.length > 0 ? animals[Math.floor(Math.random() * animals.length)] : null;
+    }
+
+    function removeAnimal(habitatType, animal) {
+        const habitat = habitats[habitatType];
+        const animals = habitat.animals;
+        const index = animals.indexOf(animal);
+        if (index !== -1) {
+            animals.splice(index, 1);
+            updateMoneyDisplay();
         }
     }
 
@@ -115,23 +133,35 @@
         document.getElementById('money').innerText = money;
     }
 
-    function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType) {
+    function addHabitatAnimals(habitatType) {
+        const habitat = habitats[habitatType];
+        const containerId = habitatType + '-animal-buttons';
+        const animalCosts = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+        
+        for (let i = 0; i < 50; i++) {
+            const animalCost = animalCosts[Math.floor(Math.random() * animalCosts.length)];
+            const animalEarnings = Math.round(Math.random() * 3) + 1; // Random earnings between 1 and 4
+            const animalName = `Animal ${i + 1}`;
+            const animalImage = 'animal.jpg'; // Replace with actual image URL
+            const buttonClass = `${habitatType}-button`;
+            
+            addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass);
+        }
+    }
+
+    function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass) {
+        const habitat = habitats[habitatType];
         const container = document.getElementById(containerId);
         const button = document.createElement('button');
-        button.className = 'button ' + habitatType + '-button';
-        button.innerText = 'Buy ' + animalName + ' ($' + animalCost + ')';
+        button.className = `button ${buttonClass}`;
+        button.innerText = `Buy ${animalName} ($${animalCost})`;
         button.onclick = function () {
             buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType);
         };
         container.appendChild(button);
-    }
 
-    function addHabitatAnimals(habitatType) {
-        const habitatAnimals = habitatType === 'ground' ? groundAnimals : [];
-        const containerId = habitatType + '-animal-buttons';
-        habitatAnimals.forEach(animal => {
-            addAnimalButton(containerId, animal.name, animal.cost, animal.earnings, animal.image, habitatType);
-        });
+        // Add the animal to the habitat
+        habitat.animals.push({ name: animalName, cost: animalCost, earnings: animalEarnings, image: animalImage });
     }
 </script>
 </body>
