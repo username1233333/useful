@@ -12,33 +12,12 @@
             color: #333;
         }
 
-        /* Updated styles for habitats */
-        .ground-habitat {
+        .habitat {
             margin: 10px;
             padding: 10px;
             border: 1px solid #ccc;
             display: inline-block;
             background-color: #ffd700;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .air-habitat {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            background-color: #87CEEB;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .water-habitat {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            background-color: #00BFFF;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
@@ -55,34 +34,32 @@
             border-radius: 5px;
         }
 
-        /* New button styles */
         .chicken-button { background-color: #FFD700; }
         .emu-button { background-color: #FFA500; }
         .duck-button { background-color: #00BFFF; }
         .fish-button { background-color: #1E90FF; }
-
-        /* Existing styles remain unchanged */
-        /* Add more animal button styles as needed */
+        /* Add more button styles as needed */
 
         #game-container {
-            /* Updated background color */
             background-color: #e0e0e0;
             margin: 20px;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        /* Existing styles remain unchanged */
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <!-- Existing HTML content remains unchanged -->
+    <h1 style="color: #4CAF50;">Dino Money Game</h1>
+    <p id="money-display" style="color: #333;">Money: $<span id="money">1000</span></p>
 
-    <div class="habitat ground-habitat" id="ground-habitat">
-        <!-- Existing content remains unchanged -->
+    <!-- Ground Habitat -->
+    <div class="habitat" id="ground-habitat">
+        <h2 style="color: #4CAF50;">Ground Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="ground-earnings">0</span> per second</p>
+        <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1, 'ground')">Buy Ground Habitat ($200)</button>
 
         <!-- Add more animals as needed -->
         <button class="button chicken-button" onclick="buyAnimal('Chicken', 20, 0.1, 'chicken.jpg', 'ground')">Buy Chicken ($20)</button>
@@ -97,7 +74,68 @@
 
 </div>
 
-<!-- Existing JavaScript code remains unchanged -->
+<script>
+    let money = 1000;
+    let groundEarnings = 0;
 
+    const groundAnimals = [
+        { name: 'Tyrannosaurus Rex', cost: 500, earnings: 2, image: 'trex.jpg' },
+        { name: 'Stegosaurus', cost: 300, earnings: 1.5, image: 'stegosaurus.jpg' },
+        // Add more ground animals as needed
+    ];
+
+    function buyHabitat(habitatName, habitatCost, habitatEarnings, habitatType) {
+        if (money >= habitatCost) {
+            money -= habitatCost;
+            if (habitatType === 'ground') {
+                groundEarnings += habitatEarnings;
+                document.getElementById('ground-earnings').innerText = groundEarnings;
+                // Add purchased habitat-specific animals
+                addHabitatAnimals(habitatType);
+            }
+            updateMoneyDisplay();
+        } else {
+            alert('Not enough money to buy ' + habitatName);
+        }
+    }
+
+    function buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType) {
+        if (money >= animalCost) {
+            money -= animalCost;
+            if (habitatType === 'ground') {
+                groundEarnings += animalEarnings;
+                document.getElementById('ground-earnings').innerText = groundEarnings;
+                // Add the purchased animal button to the ground habitat
+                addAnimalButton('ground-animal-buttons', animalName, animalCost, animalEarnings, animalImage, habitatType);
+            }
+            updateMoneyDisplay();
+        } else {
+            alert('Not enough money to buy ' + animalName);
+        }
+    }
+
+    function updateMoneyDisplay() {
+        document.getElementById('money').innerText = money;
+    }
+
+    function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType) {
+        const container = document.getElementById(containerId);
+        const button = document.createElement('button');
+        button.className = 'button ' + habitatType + '-button';
+        button.innerText = 'Buy ' + animalName + ' ($' + animalCost + ')';
+        button.onclick = function () {
+            buyAnimal(animalName, animalCost, animalEarnings, animalImage, habitatType);
+        };
+        container.appendChild(button);
+    }
+
+    function addHabitatAnimals(habitatType) {
+        const habitatAnimals = habitatType === 'ground' ? groundAnimals : [];
+        const containerId = habitatType + '-animal-buttons';
+        habitatAnimals.forEach(animal => {
+            addAnimalButton(containerId, animal.name, animal.cost, animal.earnings, animal.image, habitatType);
+        });
+    }
+</script>
 </body>
 </html>
