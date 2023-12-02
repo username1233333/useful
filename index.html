@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Game</title>
+    <title>Ultimate Dino Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,8 +42,8 @@
 <body>
 
 <div id="game-container">
-    <h1>Dino Game</h1>
-    <p id="money-display">Money: $<span id="money">0</span></p>
+    <h1>Ultimate Dino Game</h1>
+    <p id="money-display">Money: $<span id="money">1000</span></p>
 
     <div id="animals-container">
         <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 1)">Buy Komodo Dragon ($100)</button>
@@ -51,11 +51,12 @@
         <button class="button" onclick="buyAnimal('Emu', 50, 0.5)">Buy Emu ($50)</button>
         <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1)">Buy Ground Habitat ($200)</button>
         <button class="button" onclick="buyHabitat('Water Habitat', 300, 2)">Buy Water Habitat ($300)</button>
+        <!-- Add more animals and habitats here -->
     </div>
 </div>
 
 <script>
-    let money = 0;
+    let money = 1000;
     let moneyPerMinute = 0;
 
     setInterval(function() {
@@ -92,4 +93,3 @@
 
 </body>
 </html>
-
