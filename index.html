@@ -127,7 +127,11 @@
             document.getElementById('money').textContent = gameMoney;
             document.getElementById('dinosaur-earnings').textContent = habitats.dinosaur.earnings * habitats.dinosaur.count;
             document.getElementById('animal-earnings').textContent = habitats.animal.earnings * habitats.animal.count;
-            document.getElementById('money-display').textContent = 'Money: $' + gameMoney; // Update money display
+        }
+
+        function updateEarnings() {
+            gameMoney += habitats.dinosaur.earnings * habitats.dinosaur.count + habitats.animal.earnings * habitats.animal.count;
+            updateUI();
         }
 
         function buyHabitat(habitatType) {
@@ -193,6 +197,9 @@
         document.getElementById('buy-military-jeep').addEventListener('click', buyMilitaryJeep);
 
         document.getElementById('hire-guards').addEventListener('click', hireGuards);
+
+        // Set up a timer for updating earnings every second
+        setInterval(updateEarnings, 1000);
 
         // Set up a timer for random events every 5 minutes
         setInterval(handleRandomEvent, 5 * 60 * 1000);
