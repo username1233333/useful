@@ -67,6 +67,9 @@
         <h2 style="color: #4CAF50;">Dinosaur Habitat</h2>
         <p style="color: #333;">Earnings: $<span id="dinosaur-earnings">0</span> per second</p>
         <button class="button" id="buy-dinosaur-habitat">Buy Dinosaur Habitat ($200)</button>
+        <button class="button" id="add-trex">Add T-Rex ($100)</button>
+        <button class="button" id="add-raptor">Add Raptor ($50)</button>
+        <!-- Add 18 more dinosaur buttons as needed -->
     </div>
 
     <!-- Animal Habitat -->
@@ -74,6 +77,11 @@
         <h2 style="color: #4CAF50;">Animal Habitat</h2>
         <p style="color: #333;">Earnings: $<span id="animal-earnings">0</span> per second</p>
         <button class="button" id="buy-animal-habitat">Buy Animal Habitat ($50)</button>
+        <button class="button" id="add-chicken">Add Chicken ($10)</button>
+        <button class="button" id="add-goat">Add Goat ($20)</button>
+        <button class="button" id="add-horse">Add Horse ($30)</button>
+        <button class="button" id="add-generic-animal">Add Generic Animal ($15)</button>
+        <!-- Add 16 more animal buttons as needed -->
     </div>
 
     <!-- Electric Fence -->
@@ -112,26 +120,46 @@
                 name: 'Dinosaur Habitat',
                 cost: 200,
                 earnings: 5,
-                count: 0
+                count: 0,
+                animals: {
+                    trex: 0,
+                    raptor: 0,
+                    // Add more dinosaurs as needed
+                }
             },
             animal: {
                 name: 'Animal Habitat',
                 cost: 50,
                 earnings: 2,
-                count: 0
+                count: 0,
+                animals: {
+                    chicken: 0,
+                    goat: 0,
+                    horse: 0,
+                    generic: 0,
+                    // Add more animals as needed
+                }
             }
             // Add more habitats as needed
         };
 
         function updateUI() {
             document.getElementById('money').textContent = gameMoney;
-            document.getElementById('dinosaur-earnings').textContent = habitats.dinosaur.earnings * habitats.dinosaur.count;
-            document.getElementById('animal-earnings').textContent = habitats.animal.earnings * habitats.animal.count;
+            document.getElementById('dinosaur-earnings').textContent = habitats.dinosaur.earnings * getTotalAnimals(habitats.dinosaur);
+            document.getElementById('animal-earnings').textContent = habitats.animal.earnings * getTotalAnimals(habitats.animal);
         }
 
         function updateEarnings() {
-            gameMoney += habitats.dinosaur.earnings * habitats.dinosaur.count + habitats.animal.earnings * habitats.animal.count;
+            gameMoney += habitats.dinosaur.earnings * getTotalAnimals(habitats.dinosaur) + habitats.animal.earnings * getTotalAnimals(habitats.animal);
             updateUI();
+        }
+
+        function getTotalAnimals(habitat) {
+            let total = 0;
+            for (const animal in habitat.animals) {
+                total += habitat.animals[animal];
+            }
+            return total;
         }
 
         function buyHabitat(habitatType) {
@@ -142,6 +170,21 @@
                 updateUI();
             } else {
                 console.log('Not enough money to buy ' + habitat.name);
+            }
+        }
+
+        function addAnimal(habitatType, animalType, cost) {
+            const habitat = habitats[habitatType];
+            if (habitat.count > 0) {
+                if (gameMoney >= cost) {
+                    gameMoney -= cost;
+                    habitat.animals[animalType]++;
+                    updateUI();
+                } else {
+                    console.log('Not enough money to add ' + animalType);
+                }
+            } else {
+                console.log('You need to buy ' + habitat.name + ' first.');
             }
         }
 
@@ -191,6 +234,34 @@
         document.getElementById('buy-animal-habitat').addEventListener('click', function() {
             buyHabitat('animal');
         });
+
+        document.getElementById('add-trex').addEventListener('click', function() {
+            addAnimal('dinosaur', 'trex', 100);
+        });
+
+        document.getElementById('add-raptor').addEventListener('click', function() {
+            addAnimal('dinosaur', 'raptor', 50);
+        });
+
+        // Add event listeners for more dinosaurs as needed
+
+        document.getElementById('add-chicken').addEventListener('click', function() {
+            addAnimal('animal', 'chicken', 10);
+        });
+
+        document.getElementById('add-goat').addEventListener('click', function() {
+            addAnimal('animal', 'goat', 20);
+        });
+
+        document.getElementById('add-horse').addEventListener('click', function() {
+            addAnimal('animal', 'horse', 30);
+        });
+
+        document.getElementById('add-generic-animal').addEventListener('click', function() {
+            addAnimal('animal', 'generic', 15);
+        });
+
+        // Add event listeners for more animals as needed
 
         document.getElementById('buy-electric-fence').addEventListener('click', buyElectricFence);
 
