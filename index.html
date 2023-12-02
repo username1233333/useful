@@ -3,59 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Uploading Website</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    <title>Dino Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #money-display {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        #animals-container {
+            margin-top: 20px;
+        }
+
+        .habitat {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-    <h1>Video Uploading Website</h1>
 
-    <input type="file" id="videoInput" name="file" accept="video/*" required>
-    <br>
-    <button id="uploadButton">Upload</button>
+<div id="game-container">
+    <h1>Dino Game</h1>
+    <p id="money-display">Money: $<span id="money">0</span></p>
 
-    <h2>Uploaded Videos</h2>
-    <div id="videoList"></div>
+    <div id="animals-container">
+        <button class="button" onclick="buyAnimal('Komodo Dragon', 100, 1)">Buy Komodo Dragon ($100)</button>
+        <button class="button" onclick="buyAnimal('T-Rex', 500, 5)">Buy T-Rex ($500)</button>
+        <button class="button" onclick="buyAnimal('Emu', 50, 0.5)">Buy Emu ($50)</button>
+        <button class="button" onclick="buyHabitat('Ground Habitat', 200, 1)">Buy Ground Habitat ($200)</button>
+        <button class="button" onclick="buyHabitat('Water Habitat', 300, 2)">Buy Water Habitat ($300)</button>
+    </div>
+</div>
 
-    <script>
-        // Cloudinary configuration
-        const cloudName = 'ddvnqy4kp';
-        const uploadPreset = 'oeprsvw0';
+<script>
+    let money = 0;
+    let moneyPerMinute = 0;
 
-        cloudinary.config({
-            cloud_name: cloudName
-        });
+    setInterval(function() {
+        money += moneyPerMinute / 60;
+        updateDisplay();
+    }, 1000);
 
-        // Event listener for the upload button
-        $('#uploadButton').click(function() {
-            const fileInput = document.getElementById('videoInput');
-            const file = fileInput.files[0];
+    function updateDisplay() {
+        document.getElementById('money').textContent = money.toFixed(2);
+    }
 
-            if (file) {
-                // Upload the video to Cloudinary
-                cloudinary.uploader.upload(file, { upload_preset: uploadPreset }, function(result) {
-                    // Display the uploaded video
-                    const videoListElement = document.getElementById('videoList');
-                    const videoElement = document.createElement('video');
-                    videoElement.width = 400;
-                    videoElement.controls = true;
-                    videoElement.src = result.secure_url;
-                    videoListElement.appendChild(videoElement);
-                });
-            }
-        });
+    function buyAnimal(animalName, cost, revenuePerMinute) {
+        if (money >= cost) {
+            money -= cost;
+            moneyPerMinute += revenuePerMinute;
+            updateDisplay();
+            alert(`You bought a ${animalName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
+        } else {
+            alert("Not enough money!");
+        }
+    }
 
-        // Retrieve and display existing videos
-        $.get(`https://api.cloudinary.com/v1_1/${cloudName}/resources/image`, function(data) {
-            const videoListElement = document.getElementById('videoList');
-            data.resources.forEach(video => {
-                const videoElement = document.createElement('video');
-                videoElement.width = 400;
-                videoElement.controls = true;
-                videoElement.src = video.secure_url;
-                videoListElement.appendChild(videoElement);
-            });
-        });
-    </script>
+    function buyHabitat(habitatName, cost, revenuePerMinute) {
+        if (money >= cost) {
+            money -= cost;
+            moneyPerMinute += revenuePerMinute;
+            updateDisplay();
+            alert(`You bought a ${habitatName}! It generates $${revenuePerMinute.toFixed(2)} per minute.`);
+        } else {
+            alert("Not enough money!");
+        }
+    }
+</script>
+
 </body>
 </html>
+
