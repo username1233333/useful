@@ -141,12 +141,22 @@
         for (let i = 0; i < 50; i++) {
             const animalCost = animalCosts[Math.floor(Math.random() * animalCosts.length)];
             const animalEarnings = Math.round(Math.random() * 3) + 1; // Random earnings between 1 and 4
-            const animalName = `Animal ${i + 1}`;
+            const animalName = generateRandomName();
             const animalImage = 'animal.jpg'; // Replace with actual image URL
             const buttonClass = `${habitatType}-button`;
             
             addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass);
         }
+    }
+
+    function generateRandomName() {
+        const prefixes = ['Mega', 'Tri', 'Bronto', 'Stego', 'Tyranno', 'Veloci', 'Raptor', 'Dilo', 'Ptero', 'Para'];
+        const suffixes = ['saurus', 'don', 'ceratops', 'rex', 'raptor', 'pod', 'saur', 'adon'];
+
+        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+
+        return randomPrefix + randomSuffix;
     }
 
     function addAnimalButton(containerId, animalName, animalCost, animalEarnings, animalImage, habitatType, buttonClass) {
