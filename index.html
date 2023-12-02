@@ -3,208 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Zoo Game</title>
+    <title>Dinosaur Zoo Game</title>
     <style>
+        /* Add your colorful styles here */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
             background-color: #f0f0f0;
-            color: #333;
-        }
-
-        .habitat {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            background-color: #ffd700; /* Yellow */
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .buy-button {
-            background-color: #800080; /* Purple */
-            color: white;
+            font-family: Arial, sans-serif;
         }
 
         #game-container {
-            background-color: #e0e0e0;
-            margin: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .animal-image {
-            max-width: 100px;
-            max-height: 100px;
+        .habitat {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #b3e0ff;
             border-radius: 5px;
         }
 
-        #mech-habitat,
-        #taser-habitat,
-        #electric-fence-habitat {
-            background-color: #87CEEB; /* Light Blue */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #4CAF50;
+            margin-right: 10px;
+        }
+
+        #money-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #random-event-display {
+            font-style: italic;
+            color: #FF5733;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-<audio id="background-music" loop autoplay>
-    <source src="https://musiclab.chromeexperiments.com/Song-Maker/song/4981551389605888/download" type="audio/wav">
-    Your browser does not support the audio tag.
-</audio>
-
 <div id="game-container">
-    <h1 style="color: #4CAF50;">Dino Zoo Game</h1>
-    <p id="money-display" style="color: #333;">Money: $<span id="money">1000</span></p>
+    <h1 style="color: #4CAF50;">Dinosaur Zoo Game</h1>
+    <p id="money-display">Money: $<span id="money">1000</span></p>
 
-    <!-- Ground Habitat -->
-    <div class="habitat" id="ground-habitat">
-        <h2 style="color: #4CAF50;">Ground Habitat</h2>
-        <p style="color: #333;">Earnings: $<span id="ground-earnings">0</span> per second</p>
-        <button class="button buy-button" onclick="buyHabitat('Ground Habitat', 200, 1, 'ground')">Buy Ground Habitat ($200)</button>
-
-        <!-- Dynamically generate animal buttons -->
-        <div id="ground-animal-buttons"></div>
+    <!-- Dinosaur Habitat -->
+    <div class="habitat">
+        <h2 style="color: #4CAF50;">Dinosaur Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="dinosaur-earnings">0</span> per second</p>
+        <button class="button" onclick="buyHabitat('dinosaur')">Buy Dinosaur Habitat ($200)</button>
     </div>
 
-    <!-- Mech Habitat -->
-    <div class="habitat" id="mech-habitat">
-        <h2 style="color: #4CAF50;">Mech Habitat</h2>
-        <p style="color: #333;">Earnings: $<span id="mech-earnings">0</span> per second</p>
-        <button class="button buy-button" onclick="buyHabitat('Mech Habitat', 500, 3, 'mech')">Buy Mech Habitat ($500)</button>
-
-        <!-- Dynamically generate animal buttons -->
-        <div id="mech-animal-buttons"></div>
+    <!-- Animal Habitat -->
+    <div class="habitat">
+        <h2 style="color: #4CAF50;">Animal Habitat</h2>
+        <p style="color: #333;">Earnings: $<span id="animal-earnings">0</span> per second</p>
+        <button class="button" onclick="buyHabitat('animal')">Buy Animal Habitat ($50)</button>
     </div>
 
-    <!-- Taser Habitat -->
-    <div class="habitat" id="taser-habitat">
-        <h2 style="color: #4CAF50;">Taser Habitat</h2>
-        <p style="color: #333;">Earnings: $<span id="taser-earnings">0</span> per second</p>
-        <button class="button buy-button" onclick="buyHabitat('Taser Habitat', 800, 5, 'taser')">Buy Taser Habitat ($800)</button>
-
-        <!-- Dynamically generate animal buttons -->
-        <div id="taser-animal-buttons"></div>
+    <!-- Electric Fence -->
+    <div class="habitat">
+        <h2 style="color: #4CAF50;">Electric Fence</h2>
+        <p style="color: #333;">Cost: $100</p>
+        <button class="button" onclick="buyElectricFence()">Buy Electric Fence</button>
     </div>
 
-    <!-- Electric Fence Habitat -->
-    <div class="habitat" id="electric-fence-habitat">
-        <h2 style="color: #4CAF50;">Electric Fence Habitat</h2>
-        <p style="color: #333;">Earnings: $<span id="electric-fence-earnings">0</span> per second</p>
-        <button class="button buy-button" onclick="buyHabitat('Electric Fence Habitat', 1000, 7, 'electric-fence')">Buy Electric Fence Habitat ($1000)</button>
-
-        <!-- Dynamically generate animal buttons -->
-        <div id="electric-fence-animal-buttons"></div>
+    <!-- Military Jeep -->
+    <div class="habitat">
+        <h2 style="color: #4CAF50;">Military Jeep</h2>
+        <p style="color: #333;">Cost: $500</p>
+        <button class="button" onclick="buyMilitaryJeep()">Buy Military Jeep</button>
     </div>
 
-    <!-- Additional Habits -->
-    <!-- Add more habitats as needed -->
+    <!-- Hire Guards -->
+    <div class="habitat">
+        <h2 style="color: #4CAF50;">Guards</h2>
+        <p style="color: #333;">Cost: $10 per minute</p>
+        <button class="button" onclick="hireGuards()">Hire Guards</button>
+    </div>
 
-    <button class="button buy-button" id="buy-tree-button">Buy Tree ($1)</button>
-
-    <!-- Hire People -->
-    <button class="button buy-button" id="hire-people-button">Hire People ($10 per minute)</button>
-
-    <!-- Buy Military Jeep -->
-    <button class="button buy-button" id="buy-jeep-button">Buy Military Jeep ($200)</button>
-
+    <p id="random-event-display"></p>
 </div>
 
 <script>
-    // Your existing variables and functions...
-
     document.addEventListener("DOMContentLoaded", function() {
-        // Dynamically generate dinosaurs and animals
-        generateAnimals('ground', 50);
-        generateAnimals('mech', 50);
-        generateAnimals('taser', 50);
-        generateAnimals('electric-fence', 50);
-        // Generate animals for other habitats if needed
+        let gameMoney = 1000;
+        let electricFence = false;
+        let militaryJeep = false;
+        let guards = 0;
 
-        // Set up audio
-        const audio = document.getElementById('background-music');
-        audio.volume = 0.2;
-
-        // Set up button event listeners
-        document.getElementById('buy-tree-button').addEventListener('click', buyTree);
-        document.getElementById('hire-people-button').addEventListener('click', hirePeople);
-        document.getElementById('buy-jeep-button').addEventListener('click', buyMilitaryJeep);
-
-        // Play audio
-        audio.play();
-
-        // Schedule a random event every 5 minutes
-        setInterval(() => handleRandomEvent('ground'), 5 * 60 * 1000);
-        setInterval(() => handleRandomEvent('mech'), 5 * 60 * 1000);
-        setInterval(() => handleRandomEvent('taser'), 5 * 60 * 1000);
-        setInterval(() => handleRandomEvent('electric-fence'), 5 * 60 * 1000);
-
-        // Your existing JavaScript code here
-    });
-
-    function addAnimalButton(containerId, name, cost, earnings, image, habitatType) {
-        const container = document.getElementById(containerId);
-
-        const button = document.createElement('button');
-        button.className = 'button buy-button';
-        button.textContent = `${name} ($${cost})`;
-        button.onclick = function() {
-            buyAnimal(name, cost, earnings, habitatType);
+        const habitats = {
+            dinosaur: {
+                name: 'Dinosaur Habitat',
+                cost: 200,
+                earnings: 5,
+                count: 0
+            },
+            animal: {
+                name: 'Animal Habitat',
+                cost: 50,
+                earnings: 2,
+                count: 0
+            }
+            // Add more habitats as needed
         };
 
-        const animalImage = document.createElement('img');
-        animalImage.src = image;
-        animalImage.alt = name;
-        animalImage.className = 'animal-image';
-
-        container.appendChild(button);
-        container.appendChild(animalImage);
-    }
-
-    function buyAnimal(name, cost, earnings, habitatType) {
-        const habitat = habitats[habitatType];
-        if (money >= cost && habitat.animals.length < habitat.maxAnimals) {
-            money -= cost;
-            const animal = { name, earnings };
-            habitat.animals.push(animal);
-            updateMoneyDisplay();
-            alert(`You bought ${name} for the ${habitatType} Habitat!`);
-        } else if (habitat.animals.length >= habitat.maxAnimals) {
-            alert(`You already have the maximum number of animals in the ${habitatType} Habitat.`);
-        } else {
-            alert(`Not enough money to buy ${name}.`);
+        function updateUI() {
+            document.getElementById('money').textContent = gameMoney;
+            document.getElementById('dinosaur-earnings').textContent = habitats.dinosaur.earnings * habitats.dinosaur.count;
+            document.getElementById('animal-earnings').textContent = habitats.animal.earnings * habitats.animal.count;
         }
-    }
 
-    function removeAnimal(habitatType, animal) {
-        const habitat = habitats[habitatType];
-        const index = habitat.animals.indexOf(animal);
-        if (index !== -1) {
-            habitat.animals.splice(index, 1);
+        function buyHabitat(habitatType) {
+            const habitat = habitats[habitatType];
+            if (gameMoney >= habitat.cost) {
+                gameMoney -= habitat.cost;
+                habitat.count++;
+                updateUI();
+            } else {
+                console.log('Not enough money to buy ' + habitat.name);
+            }
         }
-    }
 
-    // Your existing functions...
+        function buyElectricFence() {
+            if (gameMoney >= 100 && !electricFence) {
+                gameMoney -= 100;
+                electricFence = true;
+                updateUI();
+            } else {
+                console.log('Not enough money or already purchased Electric Fence');
+            }
+        }
 
+        function buyMilitaryJeep() {
+            if (gameMoney >= 500 && !militaryJeep) {
+                gameMoney -= 500;
+                militaryJeep = true;
+                updateUI();
+            } else {
+                console.log('Not enough money or already purchased Military Jeep');
+            }
+        }
+
+        function hireGuards() {
+            gameMoney -= 10; // Deduct $10 per minute for guards
+            guards++;
+            updateUI();
+        }
+
+        function handleRandomEvent() {
+            const randomEvent = Math.random();
+            if (randomEvent < 0.5) {
+                gameMoney -= 100; // Bad event, deduct $100
+                document.getElementById('random-event-display').textContent = 'Bad event: Lost $100!';
+            } else {
+                gameMoney += 50; // Good event, gain $50
+                document.getElementById('random-event-display').textContent = 'Good event: Gained $50!';
+            }
+            updateUI();
+        }
+
+        // Set up event listeners
+        document.getElementById('buy-dinosaur-habitat').addEventListener('click', function() {
+            buyHabitat('dinosaur');
+        });
+
+        document.getElementById('buy-animal-habitat').addEventListener('click', function() {
+            buyHabitat('animal');
+        });
+
+        document.getElementById('buy-electric-fence').addEventListener('click', buyElectricFence);
+
+        document.getElementById('buy-military-jeep').addEventListener('click', buyMilitaryJeep);
+
+        document.getElementById('hire-guards').addEventListener('click', hireGuards);
+
+        // Set up a timer for random events every 5 minutes
+        setInterval(handleRandomEvent, 5 * 60 * 1000);
+
+        // Set up a timer for guards' cost every minute
+        setInterval(hireGuards, 60 * 1000);
+
+        // Initial UI update
+        updateUI();
+    });
 </script>
-</body>
-</html>
- Your existing functions...
 
-</script>
 </body>
 </html>
